@@ -5,4 +5,4 @@ function img_names = get_jpgs_in_dir(path)
     % create a cell array of the full paths to each image
     img_names = {img_files.name}';
     paths = repmat({path}, size(img_names));
-    img_names = strcat(paths, img_names);
+    img_names = strcat(paths, filesep, img_names);

@@ -1,13 +1,5 @@
 function stats = cnn_train_face_dag(net, imdb, getBatch, varargin)
-%CNN_TRAIN_DAG Demonstrates training a CNN using the DagNN wrapper
-%    CNN_TRAIN_DAG() is similar to CNN_TRAIN(), but works with
-%    the DagNN wrapper instead of the SimpleNN wrapper.
-
-% Copyright (C) 2014-15 Andrea Vedaldi.
-% All rights reserved.
-%
-% This file is part of the VLFeat library and is made available under
-% the terms of the BSD license (see the COPYING file).
+% cnn_train_dag demonstrates training a CNN using the DagNN wrapper
 
 opts.expDir = fullfile('data','exp') ;
 opts.continue = false ;
@@ -62,7 +54,6 @@ end
 %                                                        Train and validate
 % -------------------------------------------------------------------------
 
-size(opts.train)
 
 for epoch=1:opts.numEpochs
 
@@ -88,7 +79,9 @@ for epoch=1:opts.numEpochs
   
   state.train = opts.train(randperm(numel(opts.train))) ; % shuffle
   
-%   BALANCE THE TRAINING LABEL DISTRIBUTION SETS
+  size(imdb.images.labels)
+  size(strcmp(imdb.images.set, 'train'))
+ % BALANCE THE TRAINING LABEL DISTRIBUTION SETS
   flat_idx = find(imdb.images.labels == 1 & strcmp(imdb.images.set, 'train'));
   steep_idx = find(imdb.images.labels == 2 & strcmp(imdb.images.set, 'train'));
   
