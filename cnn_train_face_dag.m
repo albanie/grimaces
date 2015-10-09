@@ -79,8 +79,6 @@ for epoch=1:opts.numEpochs
   
   state.train = opts.train(randperm(numel(opts.train))) ; % shuffle
   
-  size(imdb.images.labels)
-  size(strcmp(imdb.images.set, 'train'))
  % BALANCE THE TRAINING LABEL DISTRIBUTION SETS
   flat_idx = find(imdb.images.labels == 1 & strcmp(imdb.images.set, 'train'));
   steep_idx = find(imdb.images.labels == 2 & strcmp(imdb.images.set, 'train'));
