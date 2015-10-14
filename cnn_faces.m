@@ -31,8 +31,11 @@ opts = vl_argparse(opts, varargin);
 % --------------------------------------------------------------------
 
 % Initialize a CNN using Alexnet
-net = cnn_alexnet_init(opts);
+% net = cnn_alexnet_init(opts);
          
+% Initialize a CNN using vgg_face_net
+net = cnn_vgg_face_init(opts);
+
 %if the imdb file has already been created, load into memory.
 % Otherwise, build it from scratch.
 if exist(opts.imdbPath, 'file')
