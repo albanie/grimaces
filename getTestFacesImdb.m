@@ -8,9 +8,9 @@ minFaceArea = 3600;
 [testData, testLabels] = getFaceData(opts, minFaceArea, net, 'testing');
 
 % get the set labels for the test data
-testSet = cell(1, size(testLabels,2));
+testSet = 3 * ones(1, size(testLabels,2));
 test_label = 3;
-[testSet{:}] = deal(test_label);
+[testSet(:)] = deal(test_label);
 
 imdb_test.images.data = testData;
 imdb_test.images.labels = testLabels;
