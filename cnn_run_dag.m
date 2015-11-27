@@ -46,56 +46,56 @@ state.imdb = imdb ;
 
 if numThreads == 1
   stats = run_network(net, state, opts) ;
-else
-  savedNet = net.saveobj() ;
-  spmd(numThreads)
-    net_ = dagnn.DagNN.loadobj(savedNet) ;
-    stats_ = run_network(net_, state, opts) ;
-  end
-  stats = stats_{1};
-  
-  for i=2:numel(stats_)
-    stats = opts.mergeStatsFn(stats, stats_{i});
-  end
-end
+	else
+	  savedNet = net.saveobj() ;
+	  spmd(numThreads)
+	    net_ = dagnn.DagNN.loadobj(savedNet) ;
+	    stats_ = run_network(net_, state, opts) ;
+	  end
+	  stats = stats_{1};
+	  
+	  for i=2:numel(stats_)
+	    stats = opts.mergeStatsFn(stats, stats_{i});
+	  end
+	end
 
-% -------------------------------------------------------------------------
-function stats = run_network(net, state, opts)
-% -------------------------------------------------------------------------
+	% -------------------------------------------------------------------------
+	function stats = run_network(net, state, opts)
+	% -------------------------------------------------------------------------
 
-numGpus = numel(opts.gpus) ;
-if numGpus >= 1
-  net.move('gpu') ;
-end
+	numGpus = numel(opts.gpus) ;
+	if numGpus >= 1
+	  net.move('gpu') ;
+	end
 
-subsetSize = ceil(numel(opts.testSet) / numlabs) ;
-subsetStart = 1 + (labindex-1) * subsetSize ;
-subsetEnd = min(subsetStart + subsetSize - 1, numel(opts.testSet));
-subset = opts.testSet(subsetStart:subsetEnd) ;
-start = tic ;
-num = 0 ;
+	subsetSize = ceil(numel(opts.testSet) / numlabs);
+	subsetStart = 1 + (labindex-1) * subsetSize;
+	subsetEnd = min(subsetStart + subsetSize - 1, numel(opts.testSet));
+	subset = opts.testSet(subsetStart:subsetEnd);
+	start = tic ;
+	num = 0 ;
 
-stats = [];
+	stats = [];
 
-for t=1 : opts.batchSize : numel(subset)
-  % get this image batch and prefetch the next
-  batchStart = t ;
-  batchEnd = min(t+opts.batchSize-1, numel(subset)) ;
-  batch = subset(batchStart : batchEnd) ;
-  num = num + numel(batch) ;
-  if numel(batch) == 0, continue ; end
+	for t=numel(subset) : -opts.batchSize : 1
+	  % get this image batch and prefetch the next
+	  batchStart = t ;
+	  batchEnd = min(t+opts.batchSize-1, numel(subset)) ;
+	  batch = subset(batchStart : batchEnd) ;
+	  num = num + numel(batch) ;
+	  if numel(batch) == 0, continue ; end
 
-  inputs = state.getBatch(state.imdb, batch) ;
+	  inputs = state.getBatch(state.imdb, batch) ;
 
-  if opts.prefetch
-    batchStart = t + opts.batchSize ;
-    batchEnd = min(t+2*opts.batchSize-1, numel(subset)) ;
-    
-    nextBatch = subset(batchStart : batchEnd) ;
-    state.getBatch(state.imdb, nextBatch) ;
-  end
+	  if opts.prefetch
+	    batchStart = t + opts.batchSize ;
+	    batchEnd = min(t+2*opts.batchSize-1, numel(subset)) ;
+	    
+	    nextBatch = subset(batchStart : batchEnd) ;
+	    state.getBatch(state.imdb, nextBatch) ;
+	  end
 
-  net.eval(inputs) ; 
+	  net.eval(inputs) ; 
 
   % extract stats
   if isempty(stats)
