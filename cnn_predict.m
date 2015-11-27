@@ -1,29 +1,34 @@
 function results = cnn_predict(net)
 % Takes in a struct 'net' which contains the trained parameters
 % and  uses it to make predictions on the test set defined in imdb. 
+
+% setup the MatConvNet toolbox and add utils
+addpath('../matlab');
+addpath('utils');
 vl_setupnn ;
 
 % set path to the expected imdb file
-opts.imdbPath = fullfile('results', 'imdb.mat');
+opts.expDir = 'AlexNet-Binary';
+opts.imdbTestPath = fullfile(opts.expDir, 'imdb_test.mat');
 
 % load a dagnn object
 net = dagnn.DagNN.loadobj(net);
          
-% if the imdb file has already been created, load into memory.
+% if the imdb_test file has already been created, load into memory.
 % Otherwise, build it from scratch.
-if exist(opts.imdbPath, 'file')
-    imdb = load(opts.imdbPath);
+if exist(opts.imdbTestPath, 'file')
+    imdb_test = load(opts.imdbTestPath);
 else
-    imdb = getFacesImdb(opts, net);
+    imdb_test = getTestFacesImdb(opts, net);
     mkdir(opts.expDir);
-    save(opts.imdbPath, '-struct', 'imdb');
+    save(opts.imdbTestPath, '-struct', 'imdb_test');
 end
 
 % retrieve the test items 
-testSet = find(strcmp(imdb.images.set, 'test'));
+testSet = find(imdb_test.images.set == 3);
 
 % finally we can evalue the network
-stats = cnn_run_dag(net, imdb, @getBatch, 'testSet', testSet);
+stats = cnn_run_dag(net, imdb_test, @getBatch, 'testSet', testSet);
 
 results = {};
 results.loss = mean([stats.loss]);
