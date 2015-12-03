@@ -46,73 +46,73 @@ state.imdb = imdb ;
 
 if numThreads == 1
   stats = run_network(net, state, opts) ;
-	else
-	  savedNet = net.saveobj() ;
-	  spmd(numThreads)
-	    net_ = dagnn.DagNN.loadobj(savedNet) ;
-	    stats_ = run_network(net_, state, opts) ;
-	  end
-	  stats = stats_{1};
-	  
-	  for i=2:numel(stats_)
-	    stats = opts.mergeStatsFn(stats, stats_{i});
-	  end
-	end
+else
+    savedNet = net.saveobj() ;
+  spmd(numThreads)
+    net_ = dagnn.DagNN.loadobj(savedNet) ;
+    stats_ = run_network(net_, state, opts) ;
+  end
+  stats = stats_{1};
 
-	% -------------------------------------------------------------------------
-	function stats = run_network(net, state, opts)
-	% -------------------------------------------------------------------------
+  for i=2:numel(stats_)
+    stats = opts.mergeStatsFn(stats, stats_{i});
+  end
+end
 
-	numGpus = numel(opts.gpus) ;
-	if numGpus >= 1
-	  net.move('gpu') ;
-	end
+% -------------------------------------------------------------------------
+function stats = run_network(net, state, opts)
+% -------------------------------------------------------------------------
 
-	subsetSize = ceil(numel(opts.testSet) / numlabs);
-	subsetStart = 1 + (labindex-1) * subsetSize;
-	subsetEnd = min(subsetStart + subsetSize - 1, numel(opts.testSet));
-	subset = opts.testSet(subsetStart:subsetEnd);
-	start = tic ;
-	num = 0 ;
+numGpus = numel(opts.gpus) ;
+if numGpus >= 1
+  net.move('gpu') ;
+end
 
-	stats = [];
+subsetSize = ceil(numel(opts.testSet) / numlabs);
+subsetStart = 1 + (labindex-1) * subsetSize;
+subsetEnd = min(subsetStart + subsetSize - 1, numel(opts.testSet));
+subset = opts.testSet(subsetStart:subsetEnd);
+start = tic ;
+num = 0 ;
 
-	for t=numel(subset) : -opts.batchSize : 1
-	  % get this image batch and prefetch the next
-	  batchStart = t ;
-	  batchEnd = min(t+opts.batchSize-1, numel(subset)) ;
-	  batch = subset(batchStart : batchEnd) ;
-	  num = num + numel(batch) ;
-	  if numel(batch) == 0, continue ; end
+stats = [];
 
-	  inputs = state.getBatch(state.imdb, batch) ;
+for t=numel(subset) : -opts.batchSize : 1
+  % get this image batch and prefetch the next
+  batchStart = t ;
+  batchEnd = min(t+opts.batchSize-1, numel(subset)) ;
+  batch = subset(batchStart : batchEnd) ;
+  num = num + numel(batch) ;
+  if numel(batch) == 0, continue ; end
 
-	  if opts.prefetch
-	    batchStart = t + opts.batchSize ;
-	    batchEnd = min(t+2*opts.batchSize-1, numel(subset)) ;
-	    
-	    nextBatch = subset(batchStart : batchEnd) ;
-	    state.getBatch(state.imdb, nextBatch) ;
-	  end
+  inputs = state.getBatch(state.imdb, batch) ;
 
-	  net.eval(inputs) ; 
+  if opts.prefetch
+    batchStart = t + opts.batchSize ;
+    batchEnd = min(t+2*opts.batchSize-1, numel(subset)) ;
 
-  % extract stats
-  if isempty(stats)
-    stats = opts.extractStatsFn(net) ;
-  else
-    stats = opts.mergeStatsFn(stats, opts.extractStatsFn(net)) ;
+    nextBatch = subset(batchStart : batchEnd) ;
+    state.getBatch(state.imdb, nextBatch) ;
   end
 
-  % print learning statistics
-  time = toc(start) ;
+  net.eval(inputs) ; 
 
-  fprintf('batch %3d/%3d: %.1f Hz', ...
-    fix(t/opts.batchSize)+1, ceil(numel(subset)/opts.batchSize), ...
-    num/time) ;
-  
-  opts.printStatsFn(stats) ;
-  fprintf('\n') ;
+% extract stats
+if isempty(stats)
+stats = opts.extractStatsFn(net) ;
+else
+stats = opts.mergeStatsFn(stats, opts.extractStatsFn(net)) ;
+end
+
+% print learning statistics
+time = toc(start) ;
+
+fprintf('batch %3d/%3d: %.1f Hz', ...
+fix(t/opts.batchSize)+1, ceil(numel(subset)/opts.batchSize), ...
+num/time) ;
+
+opts.printStatsFn(stats) ;
+fprintf('\n') ;
 end
 
 net.reset() ;
