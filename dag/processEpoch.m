@@ -22,7 +22,7 @@ for subsetIdx=1:opts.batchSize:numel(subset)
     for subBatchIdx=1:opts.numSubBatches
         % get the indices for this image batch
         batch = computeBatch(subsetIdx, subBatchIdx, subset, opts);
-       
+        
         % if the batch is empty, we are done
         if numel(batch) == 0, continue ; end
         

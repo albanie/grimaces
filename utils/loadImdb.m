@@ -1,5 +1,5 @@
 function imdb = loadImdb(opts, dagnet, mode)
-% Returns imdb (the image database). If the imdb file has already been 
+% Returns imdb (the image database). If the imdb file has already been
 % created previously, load into memory. Otherwise, build it from scratch.
 
 % In 'train' mode, the training and validation imdb is loaded.
@@ -20,7 +20,7 @@ else
         save(opts.imdbPath, '-struct', 'imdb_test', '-v7.3');
     end
 end
-   
+
 end
 
 % --------------------------------------------------------------------
@@ -43,7 +43,7 @@ val_label = 2;
 
 % create the imdb training/validation structure expected by matconvnet
 train_val_data = cat(4, trainData, valData);
-train_val_labels = cat(2, trainLabels, valLabels); 
+train_val_labels = cat(2, trainLabels, valLabels);
 train_val_set = cat(2, trainSet, valSet);
 
 imdb.images.data = train_val_data;
