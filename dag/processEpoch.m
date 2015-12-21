@@ -39,7 +39,7 @@ for subsetIdx=1:opts.batchSize:numel(subset)
         
         % evaluate the netowrk on this batch
         if strcmp(mode, 'train')
-            dagnet.paramDersAccumulate = (subBatchIdx ~= 1) ;
+            dagnet.accumulateParamDers = (subBatchIdx ~= 1) ;
             dagnet.eval(inputs, opts.derOutputs) ;
         else
             dagnet.eval(inputs) ;
