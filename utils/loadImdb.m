@@ -17,7 +17,7 @@ else
         save(opts.imdbPath, '-struct', 'imdb', '-v7.3');
     else % mode == 'test'
         imdb = getTestFacesImdb(opts, dagnet);
-        save(opts.imdbPath, '-struct', 'imdb_test', '-v7.3');
+        save(opts.imdbPath, '-struct', 'imdb', '-v7.3');
     end
 end
 

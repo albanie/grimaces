@@ -15,12 +15,15 @@ vl_setupnn;
 opts.expDir = 'experiments/AlexNet-Binary/test';
 opts.imdbPath = fullfile(opts.expDir, 'imdb_test.mat');
 
+% if the imdb test doesn't exist, we need to create it from scratch.
+opts.dataDir = 'data';
+
 % load a dagnn object
 dagnet = dagnn.DagNN.loadobj(net);
 
 
 %% DEBUGING MODE
-dagnet.conserveMemory = false;
+% dagnet.conserveMemory = false;
 
 %END DEBUGGING MODE
 %%
@@ -35,6 +38,9 @@ testSet = find(imdb_test.images.set == 3);
 opts.test.testMode = true;
 opts.test.expDir = opts.expDir;
 dagnet.mode = 'test';
+
+% only one epoch is needed.
+opts.test.numEpochs = 1;
 
 % finally we can evaluate the network
 stats = runDAG(dagnet, ...

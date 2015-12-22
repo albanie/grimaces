@@ -32,7 +32,7 @@ end
 
 % Use the dagnn wrapper to set the fine tuning rate on 
 % each layer
-dagnet = dagnn.DagNN.fromSimpleNN(pretrainedNet);
+dagnet = dagnn.DagNN.fromSimpleNN(pretrainedNet, 'canonicalNames', true);
 paramIdx = dagnet.getParamIndex([dagnet.layers(1:end-2).params]);
 [dagnet.params(paramIdx).learningRate] = deal(opts.fineTuningRate);
 
