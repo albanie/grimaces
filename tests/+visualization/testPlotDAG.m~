@@ -1,0 +1,26 @@
+% test plotDAG
+
+% set up some example parameters
+stats.train(1).prob = 0.55;
+stats.train(1).error = 0.45;
+stats.val(1).prob = 0.65;
+stats.val(1).error = 0.6;
+
+opts.modelFigPath = 'data/testFig';
+
+%% Test plotDAG for the first epoch
+epoch = 1;
+plotDAG(stats, epoch, opts);
+
+
+%% Test plotDAG for the second epoch
+% create additional stats
+stats.train(2).prob = 0.5;
+stats.train(2).error = 0.4;
+stats.val(2).prob = 0.55;
+stats.val(2).error = 0.5;
+
+epoch = 2;
+plotDAG(stats, epoch, opts);
+
+
