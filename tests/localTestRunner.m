@@ -8,8 +8,8 @@ addpath(GetFullPath('../../matlab'));
 vl_setupnn;
 
 % run tests on each package
-% runTestSuite('utils');
-% runTestSuite('IO');
+runtests('utils/');
+% runtests('IO');
 runtests('visualization');
 
 end

@@ -1,11 +1,18 @@
-% test findLastCheckpoint
+classdef TestFindLastCheckpoint < matlab.unittest.TestCase
+    
+    methods (Test)
+        
+        function testLastCheckpoint(testCase)                  
+            % check that the last checkpoint is calculated correctly.
+            opts.expDir = GetFullPath('../data/savedEpochs');
+            expectedEpoch = 361;
+            epoch = findLastCheckpoint(opts);
+            testCase.verifyEqual(expectedEpoch, epoch);
+        end
+    end
+end
 
-% set up opts structure
-opts.expDir = '../data/savedEpochs';
-expectedEpoch = 361;
 
-%% Test last checkpoint correctly calculated
-epoch = findLastCheckpoint(opts);
 
-% check that the checkpoint takes the expected value
-assert(isequal(expectedEpoch, epoch));
+
+
