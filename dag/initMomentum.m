@@ -7,7 +7,7 @@ if strcmp(mode,'train')
 end
 
 if numel(opts.gpus) >= 1
-    net.move('gpu') ;
+    dagnet.move('gpu') ;
     if strcmp(mode,'train')
         state.momentum = cellfun(@gpuArray,state.momentum,'UniformOutput',false) ;
     end

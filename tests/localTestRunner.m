@@ -1,15 +1,26 @@
 function localTestRunner
 
-% setup paths and code
+% setup path to mock objects
+addpath(GetFullPath('mockObjects'));
+
+% setup paths to source code
 addpath(GetFullPath('../IO'));
 addpath(GetFullPath('../utils'));
 addpath(GetFullPath('../visualization'));
+addpath(GetFullPath('../dag'));
 addpath(GetFullPath('../../matlab'));
 vl_setupnn;
 
-% run tests on each package
-runtests('utils/');
-% runtests('IO');
+%-----------------------------------
+% SLOW TESTS 
+%-----------------------------------
+runtests('IO'); 
 runtests('visualization');
+
+%-----------------------------------
+% FAST TESTS 
+%-----------------------------------
+runtests('utils/');
+runtests('dag');
 
 end
