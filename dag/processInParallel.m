@@ -6,8 +6,8 @@ function [dagnet, stats] = processInParallel(state, dagnet, epoch, stats, opts)
     savedNet = dagnet.saveobj() ;
     spmd
       net_ = dagnn.DagNN.loadobj(savedNet) ;
-      stats_.train = processEpoch(net_, state, opts, 'train') ;
-      stats_.val = processEpoch(net_, state, opts, 'val') ;
+      stats_.train = processEpoch(state, net_, opts, 'train') ;
+      stats_.val = processEpoch(state, net_, opts, 'val') ;
       if labindex == 1, savedNet_ = net_.saveobj() ; end
     end
     % TODO: Understand why we load from the first GPU
