@@ -17,7 +17,7 @@ fname = opts.memoryMapFile;
 
 format = {} ;
 for i=1:numel(dagnet.params)
-  format(end+1,1:3) = {'single', size(dagnet.params(i).value), net.params(i).name} ;
+  format(end+1,1:3) = {'single', size(dagnet.params(i).value), dagnet.params(i).name} ;
 end
 format(end+1,1:3) = {'double', [3 1], 'errors'} ;
 if ~exist(fname) && (labindex == 1)
