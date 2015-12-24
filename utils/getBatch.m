@@ -6,7 +6,7 @@ input = imdb.images.data(:,:,:,batch);
 label = imdb.images.labels(1,batch);
 
 % Move input to the GPU if needed.
-if opts.numGpus > 0
+if numel(opts.gpus) > 0
   input = gpuArray(input) ;
 end
 

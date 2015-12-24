@@ -30,7 +30,7 @@ for subsetIdx=1:opts.batchSize:numel(subset)
         num = num + numel(batch) ;
         
         % get batch of network inputs
-        inputs = state.getBatch(state.imdb, batch) ;
+        inputs = state.getBatch(state.imdb, batch, opts) ;
         
         % prefetch next batch if required
         if opts.prefetch
