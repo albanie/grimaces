@@ -7,6 +7,7 @@ state = initMomentum(state, dagnet, opts, mode);
 mmap = mapMemory(dagnet, opts);
 
 % initialize processing variables
+stats.num = 0;
 stats.time = 0;
 stats.scores = [];
 subset = state.(mode);
