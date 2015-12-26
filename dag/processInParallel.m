@@ -5,10 +5,10 @@ function [dagnet, stats] = processInParallel(state, dagnet, epoch, stats, opts)
     % convert dagnet to vanilla matlab struct
     savedNet = dagnet.saveobj() ;
     spmd
-      net_ = dagnn.DagNN.loadobj(savedNet) ;
-      stats_.train = processEpoch(state, net_, opts, 'train') ;
-      stats_.val = processEpoch(state, net_, opts, 'val') ;
-      if labindex == 1, savedNet_ = net_.saveobj() ; end
+      dagnet_ = dagnn.DagNN.loadobj(savedNet) ;
+      stats_.train = processEpoch(state, dagnet_, opts, 'train') ;
+      stats_.val = processEpoch(state, dagnet_, opts, 'val') ;
+      if labindex == 1, savedNet_ = dagnet_.saveobj() ; end
     end
     % TODO: Understand why we load from the first GPU
     dagnet = dagnn.DagNN.loadobj(savedNet_{1}) ; 

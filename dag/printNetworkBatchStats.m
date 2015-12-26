@@ -1,7 +1,6 @@
-function printNetworkBatchStats(state, stats, opts, subsetIdx, subset, start, num, mode)
+function printNetworkBatchStats(state, stats, opts, subsetIdx, subset, start, mode)
 
 time = toc(start) ;
-stats.num = num ;
 stats.time = toc(start) ;
 
 batchNumber = fix(subsetIdx/opts.batchSize)+1;

@@ -57,7 +57,8 @@ for subsetIdx=1:opts.batchSize:numel(subset)
     end
     
     % print learning statistics
-    printNetworkBatchStats(state, stats, opts, subsetIdx, subset, start, num, mode);
+    stats.num = num ;
+    printNetworkBatchStats(state, stats, opts, subsetIdx, subset, start, mode);
 end
 
 dagnet.reset() ;
