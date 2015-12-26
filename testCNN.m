@@ -24,7 +24,6 @@ dagnet = dagnn.DagNN.loadobj(net);
 
 %% DEBUGING MODE
 % dagnet.conserveMemory = false;
-
 %END DEBUGGING MODE
 %%
 

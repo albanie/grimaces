@@ -1,4 +1,4 @@
-function prefetchNextBatch(batchStart, subsetIdx, subBatchIdx, state, opts)
+function prefetchNextBatch(batchStart, subsetIdx, subBatchIdx, subset, state, opts)
 % PREFETCHNEXTBATCH saves time by fetching the next
 % batch.
 
@@ -9,4 +9,4 @@ else
     batchStart = batchStart + numlabs ;
 end
 nextBatch = subset(batchStart : opts.numSubBatches * numlabs : batchEnd) ;
-state.getBatch(state.imdb, nextBatch) ;
+state.getBatch(state.imdb, nextBatch, opts) ;

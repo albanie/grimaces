@@ -35,7 +35,7 @@ for subsetIdx=1:opts.batchSize:numel(subset)
         
         % prefetch next batch if required
         if opts.prefetch
-            prefetchNextBatch(batchStart, state, opts)
+            prefetchNextBatch(batchStart, subsetIdx, subBatchIdx, subset, state, opts)
         end
         
         % evaluate the netowrk on this batch
