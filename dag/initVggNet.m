@@ -1,18 +1,22 @@
 function net = initVggNet( varargin )
-opts.fineTuningRate = 1;
-opts.outputUnits = 2;
+% returns a structure dagnet with the structure of the 
+% pretrained network VggNet, together with a few modifications.
+
+% set defaults
+opts.numOutputs = 2;
 opts.useDropout = true ;
+opts.fineTuningRate = 1;
 opts.lossType = 'softmaxloss';
 opts.pretrainedNet = fullfile('models', 'vgg_face_16.mat');
 [opts, varargin] = vl_argparse(opts, varargin) ;
 
-rng('default');
-rng(0) ;
-
-f=1/100 ;
-
+% load VggFace 16
 vggData = load(opts.pretrainedNet);
 vggFaceNet = vggData.net;
+
+% modify the penultimate layer to suit classification
+
+
 % we only have 5 classes for the SOS dataset
 vggFaceNet.layers{end-1}.weights = {f*randn(1,1,4096,opts.outputUnits, 'single'), zeros(1,opts.outputUnits,'single')};
 
