@@ -1,4 +1,4 @@
-function stats = testCNN(net, varargin)
+function testResults = testCNN(net, varargin)
 % Takes in a struct 'net' which contains the trained parameters
 % and  uses it to make predictions on the test set defined in imdb.
 
@@ -23,7 +23,7 @@ dagnet = dagnn.DagNN.loadobj(net);
 
 
 %% DEBUGING MODE
-% dagnet.conserveMemory = false;
+dagnet.conserveMemory = false;
 %END DEBUGGING MODE
 %%
 
@@ -52,4 +52,9 @@ stats = runDAG(dagnet, ...
     opts.test, ...
     'val', ...
     testSet);
+
+
+% save the test results
+testResults = stats.val ;
+save(strcat(opts.expDir, '/test-results'), 'testResults') ;
 end

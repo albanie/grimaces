@@ -18,6 +18,9 @@ opts.dataDir = 'data';
 % set path to where the preprocessed training data will be stored
 opts.imdbPath = fullfile(opts.expDir, 'imdb.mat');
 
+% set threshold for classification
+opts.gradientThreshold = 1.97 ;
+
 [opts, varargin] = vl_argparse(opts, varargin);
 
 % set the default training parameters for the CNN

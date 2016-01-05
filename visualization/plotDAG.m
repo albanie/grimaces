@@ -2,6 +2,11 @@ function plotDAG(stats, epoch, opts)
 % plots the training and evaluation statistics
 % of the DAG.
 
+% Graphs are only created while training, not testing
+if opts.testMode
+    return
+end
+
 figure(1) ; clf ;
 plotNames = getPlotNames(stats, opts);
 
@@ -12,6 +17,8 @@ end
 
 drawnow ;
 print(1, opts.modelFigPath, '-dpdf') ;
+
+
 end
 
 % -------------------------------------------

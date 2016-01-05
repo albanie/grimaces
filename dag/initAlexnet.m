@@ -3,6 +3,7 @@ function dagnet = initAlexnet( varargin )
 % pretrained network Alexnet, together with a few modifications.
 
 % set defaults
+opts.gradientThreshold = 0 ;
 opts.numOutputs = 2;
 opts.useDropout = true ;
 opts.fineTuningRate = 1;
@@ -20,6 +21,11 @@ filters = fScale*randn(1,1,4096, opts.numOutputs, 'single');
 biases = zeros(1, opts.numOutputs,'single');
 modifiedFc8 = { filters, biases };
 pretrainedNet.layers{end-1}.weights = modifiedFc8;
+
+% modify the meta attributes of the net
+pretrainedNet.classes.name = {'flat', 'steep'} ;
+pretrainedNet.classes.description = {'gradient < threshold', 'gradient > threshold'};
+pretrainedNet.classes.threshold = opts.gradientThreshold ;
 
 % switch final layer to softmaxloss (for training)
 pretrainedNet.layers{end}.type = opts.lossType;

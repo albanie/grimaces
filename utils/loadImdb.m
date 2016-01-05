@@ -73,5 +73,5 @@ imdb_test.images.data = testData;
 imdb_test.images.labels = testLabels;
 imdb_test.images.set = testSet;
 imdb_test.meta.sets = {'test'} ;
-imdb_test.meta.classes = 3;
+imdb_test.meta.classes = 1:2;
 end
