@@ -1,4 +1,4 @@
-function stats = testCNN(net)
+function stats = testCNN(net, varargin)
 % Takes in a struct 'net' which contains the trained parameters
 % and  uses it to make predictions on the test set defined in imdb.
 
@@ -34,12 +34,16 @@ imdb_test = loadImdb(opts, dagnet, 'test');
 testSet = find(imdb_test.images.set == 3);
 
 % set DAG to testMode
+dagnet.mode = 'test';
+
+% set testing options
+opts.test.gpus = [];
 opts.test.testMode = true;
 opts.test.expDir = opts.expDir;
-dagnet.mode = 'test';
 
 % only one epoch is needed.
 opts.test.numEpochs = 1;
+opts = vl_argparse(opts, varargin);
 
 % finally we can evaluate the network
 stats = runDAG(dagnet, ...
