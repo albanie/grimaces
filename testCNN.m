@@ -48,6 +48,9 @@ opts.test.expDir = opts.expDir;
 opts.test.numEpochs = 1;
 opts = vl_argparse(opts, varargin);
 
+% save the experiment parameters 
+saveExperimentParams(opts, 'test');
+
 % finally we can evaluate the network
 stats = runDAG(dagnet, ...
     imdb_test, ...

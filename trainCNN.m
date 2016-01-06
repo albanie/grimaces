@@ -19,7 +19,7 @@ opts.dataDir = 'data';
 opts.imdbPath = fullfile(opts.expDir, 'imdb.mat');
 
 % set threshold for classification
-opts.gradientThreshold = 1.97 ;
+opts.gradientThreshold = 6.5 ;
 
 [opts, varargin] = vl_argparse(opts, varargin);
 
@@ -33,6 +33,9 @@ opts.train.gpus = [];
 opts.train.learningRate = 0.001;
 opts.train.expDir = opts.expDir;
 opts = vl_argparse(opts, varargin);
+
+% save the experiment parameters 
+saveExperimentParams(opts, 'train');
 
 % --------------------------------------------------------------------
 %                                               Prepare data and model
