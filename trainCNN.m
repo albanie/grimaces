@@ -9,8 +9,11 @@ addpath('stats');
 addpath('visualization');
 vl_setupnn;
 
+% set pretrained network of choice
+opts.pretrainedNet = 'Alexnet';
+
 % set default destination path for results
-opts.expDir = 'experiments/AlexNet-Binary/train';
+opts.expDir = strcat('experiments/', opts.pretrainedNet,'-Binary/train');
 
 % set path to the raw input data
 opts.dataDir = 'data';
@@ -40,8 +43,9 @@ saveExperimentParams(opts, 'train');
 % --------------------------------------------------------------------
 %                                               Prepare data and model
 % --------------------------------------------------------------------
-% Initialize a CNN dagnet using (pretrained) Alexnet
-dagnet = initAlexnet(opts);
+% Initialize a CNN dagnet using (pretrained) network
+dagnet = initPretrainedNet(opts);
+
 
 % Load training dataset
 imdb = loadImdb(opts, dagnet, 'train');

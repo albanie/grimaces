@@ -1,5 +1,5 @@
-function dagnet = initRandomNet( varargin )
-% returns a structure dagnet with the structure of the 
+function dagnet = initRandomnet( varargin )
+% returns a structure dagnet with the structure of the
 % pretrained network Alexnet, but every filter weight randomised.
 
 % set defaults
@@ -8,11 +8,11 @@ opts.numOutputs = 2;
 opts.useDropout = true ;
 opts.fineTuningRate = 1;
 opts.lossType = 'softmaxloss';
-opts.pretrainedNet = fullfile('models', 'alexnet.mat');
+opts.pretrainedNetModel = fullfile('models', 'alexnet.mat');
 [opts, varargin] = vl_argparse(opts, varargin) ;
 
 % load alexnet
-pretrainedNet = load(opts.pretrainedNet);
+pretrainedNet = load(opts.pretrainedNetModel);
 
 % setup random number generation
 rng('default'); rng(0) ;
@@ -32,12 +32,11 @@ pretrainedNet.classes.threshold = opts.gradientThreshold ;
 % switch final layer to softmaxloss (for training)
 pretrainedNet.layers{end}.type = opts.lossType;
 
-% Use the dagnn wrapper to set the fine tuning rate on 
+% Use the dagnn wrapper to set the fine tuning rate on
 % each layer
 dagnet = dagnn.DagNN.fromSimpleNN(pretrainedNet, 'canonicalNames', true);
 paramIdx = dagnet.getParamIndex([dagnet.layers(1:end-2).params]);
 [dagnet.params(paramIdx).learningRate] = deal(opts.fineTuningRate);
-
 
 % RANDOMIZATION OF ALL TEH LAYERZ!!!!!!
 
@@ -73,4 +72,3 @@ fScale=1/100 ;
 paramIdx = dagnet.getParamIndex(layerName);
 paramSize = size(dagnet.params(paramIdx).value);
 dagnet.params(paramIdx).value = fScale * randn(paramSize, 'single');
-

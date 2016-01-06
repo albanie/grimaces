@@ -8,11 +8,11 @@ opts.numOutputs = 2;
 opts.useDropout = true ;
 opts.fineTuningRate = 1;
 opts.lossType = 'softmaxloss';
-opts.pretrainedNet = fullfile('models', 'alexnet.mat');
+opts.pretrainedNetModel = fullfile('models', 'alexnet.mat');
 [opts, varargin] = vl_argparse(opts, varargin) ;
 
 % load alexnet
-pretrainedNet = load(opts.pretrainedNet);
+pretrainedNet = load(opts.pretrainedNetModel);
 
 % modify fc8 layer for binary classification
 rng('default'); rng(0) ;
