@@ -1,10 +1,10 @@
-function labels = get_binary_gradient_labels(imgPaths)
+function labels = getBinaryGradientLabels(imgPaths, opts)
    
-    labels = cellfun(@extract_gradient, imgPaths)'; 
+    labels = cellfun(@(x) extract_gradient(x, opts), imgPaths)'; 
     
 end
 
-function label = extract_gradient(imgPath)
+function label = extract_gradient(imgPath, opts)
     
     % The gradient is encoded as the last characters in the 
     % filename, so we do some string processing to extract it.
@@ -22,7 +22,7 @@ function label = extract_gradient(imgPath)
     gradient = str2num(gradient_str);
     
     % Finally, set label based on the gradient as folows:
-    if gradient < 2.235
+    if gradient < opts.gradientThreshold 
         label = 1;
     else
         label = 2;

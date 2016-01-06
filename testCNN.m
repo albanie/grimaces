@@ -18,6 +18,9 @@ opts.imdbPath = fullfile(opts.expDir, 'imdb_test.mat');
 % if the imdb test doesn't exist, we need to create it from scratch.
 opts.dataDir = 'data';
 
+% set threshold for classification
+opts.gradientThreshold = 6.5 ;
+
 % load a dagnn object
 dagnet = dagnn.DagNN.loadobj(net);
 

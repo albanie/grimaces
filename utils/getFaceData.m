@@ -7,7 +7,7 @@ imgNames = get_jpgs_in_subdirs(fullfile(opts.dataDir, filesep, partition));
 large_faces = select_large_faces(imgNames, opts.minFaceArea);
 
 % retrieve the label for each face
-labels = get_binary_gradient_labels(large_faces);
+labels = getBinaryGradientLabels(large_faces, opts);
 
 % format the data to conform to Alexnet
 averageImage = dagnet.meta.normalization.averageImage;
