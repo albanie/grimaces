@@ -1,4 +1,4 @@
-function [balancedData, balancedLabels] = subsampleTestData(data, labels)
+function [balancedData, balancedLabels] = subsampleData(data, labels)
 % returns a balanced dataset i.e. one in which both classes are equally
 % represented.  This is achieved by sampling from the larger class 
 % without replacement until the sample size matches the smaller class.
@@ -37,7 +37,7 @@ smallerClassIdx = find(labels == smallerClass);
 balancedIdx = horzcat(sampleIdx, smallerClassIdx);
 
 % shuffle the balancedIdx 
-balancedIdx = balancedIdx(randperm(length(balancedIdx)))
+balancedIdx = balancedIdx(randperm(length(balancedIdx)));
 
 % and create the balanced data and labels
 balancedData = data(:,:,:,balancedIdx);
