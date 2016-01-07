@@ -30,9 +30,10 @@ else
     return
 end
 
-% randomly sample from the smaller class 
+% randomly sample from the smaller class, with replacement
+withReplacement = true;
 classSizeDiff = largerClassSize - smallerClassSize;
-sampleIdx = randsample(smallerClassIdx, classSizeDiff);
+sampleIdx = randsample(smallerClassIdx, classSizeDiff, withReplacement);
 
 % these indices are then repeated in the final training Idx
 balancedTrainIdx = horzcat(opts.train, sampleIdx);
