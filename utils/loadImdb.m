@@ -41,9 +41,16 @@ valSet = 2 * ones(1, size(valLabels,2));
 valLabel = 2;
 [valSet(:)] = deal(valLabel);
 
+% To help with issues with average precision, it helps to shuffle
+% the validation data
+valIdx = 1:numel(valLabels);
+shuffledIdx = valIdx(randperm(numel(valLabels)));
+shuffledValLabels = valLabels(shuffledIdx);
+shuffledValData = valData(:,:,:,shuffledIdx);
+
 % create the imdb training/validation structure expected by matconvnet
-train_val_data = cat(4, trainData, valData);
-train_val_labels = cat(2, trainLabels, valLabels);
+train_val_data = cat(4, trainData, shuffledValData);
+train_val_labels = cat(2, trainLabels, shuffledValLabels);
 train_val_set = cat(2, trainSet, valSet);
 
 imdb.images.data = train_val_data;
