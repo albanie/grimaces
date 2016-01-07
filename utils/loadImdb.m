@@ -36,17 +36,14 @@ trainSet = ones(1, size(trainLabels,2));
 train_label = 1;
 [trainSet(:)] = deal(train_label);
 
-% balance classes across the validation through subsampling
-[balancedValData, balancedValLabels] = subsampleData(valData, valLabels);
-
 % get the set labels for the validation data
-valSet = 2 * ones(1, size(balancedValLabels,2));
+valSet = 2 * ones(1, size(valLabels,2));
 valLabel = 2;
 [valSet(:)] = deal(valLabel);
 
 % create the imdb training/validation structure expected by matconvnet
-train_val_data = cat(4, trainData, balancedValData);
-train_val_labels = cat(2, trainLabels, balancedValLabels);
+train_val_data = cat(4, trainData, valData);
+train_val_labels = cat(2, trainLabels, valLabels);
 train_val_set = cat(2, trainSet, valSet);
 
 imdb.images.data = train_val_data;
@@ -64,16 +61,13 @@ function imdb_test = getTestFacesImdb(opts, dagnet)
 % get faces and labels
 [testData, testLabels] = getFaceData(opts, dagnet, 'testing');
 
-% balance  classes through subsampling
-[balancedTestData, balancedTestLabels] = subsampleData(testData, testLabels);
-
 % get the set labels for the test data
-testSet = 3 * ones(1, size(balancedTestLabels,2));
+testSet = 3 * ones(1, size(testLabels,2));
 testLabel = 3;
 [testSet(:)] = deal(testLabel);
 
-imdb_test.images.data = balancedTestData;
-imdb_test.images.labels = balancedTestLabels;
+imdb_test.images.data = testData;
+imdb_test.images.labels = testLabels;
 imdb_test.images.set = testSet;
 imdb_test.meta.sets = {'test'} ;
 imdb_test.meta.classes = 1:2;

@@ -7,6 +7,6 @@ function state = updateDAGState(state, epoch, opts)
   state.learningRate = getLearningRate(epoch, opts);
   
   % Shuffle the training data indices
-  state.train = opts.train(randperm(numel(opts.train)));
-end
+  state.train = balanceTrainingData(state, opts);
 
+end

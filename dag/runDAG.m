@@ -44,7 +44,8 @@ state.getBatch = getBatch;
 
 for epoch=start+1:opts.numEpochs
     
-    % update state for current epoch, shuffling the training indices
+    % update state for current epoch, shuffling and resampling 
+    % the training indices to balance classes
     state = updateDAGState(state, epoch, opts);
     
     % compute stats for epoch

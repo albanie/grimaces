@@ -1,5 +1,5 @@
 function dagnet = initAlexnet( varargin )
-% returns a structure dagnet with the structure of the 
+% returns a structure dagnet with the structure of the
 % pretrained network Alexnet, together with a few modifications.
 
 % set defaults
@@ -32,18 +32,20 @@ pretrainedNet.layers{end}.type = opts.lossType;
 
 % optionally switch to batch normalization
 if opts.useDropout
-  pretrainedNet = insertDropout(pretrainedNet, 17) ;
-  pretrainedNet = insertDropout(pretrainedNet, 20) ;
+    pretrainedNet = insertDropout(pretrainedNet, 17) ;
+    pretrainedNet = insertDropout(pretrainedNet, 20) ;
 end
 
-% Use the dagnn wrapper to set the fine tuning rate on 
+% Use the dagnn wrapper to set the fine tuning rate on
 % each layer
 dagnet = dagnn.DagNN.fromSimpleNN(pretrainedNet, 'canonicalNames', true);
 paramIdx = dagnet.getParamIndex([dagnet.layers(1:end-2).params]);
 [dagnet.params(paramIdx).learningRate] = deal(opts.fineTuningRate);
 
-% Finally, we add a second loss layer to calculate class error
-layer = dagnn.Loss('loss', 'classerror');
+% Finally, we add a second loss layer to AveragePrecsion 
+% (technically it is  1 - AP)
+layer = dagnn.Loss('loss', 'averageprecision');
+
 inputs = {'prediction','label'};
 output = 'error';
 dagnet.addLayer('error', layer, inputs, output) ;
