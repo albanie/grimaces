@@ -8,7 +8,7 @@ addpath('IO');
 addpath('dag');
 addpath('utils');
 addpath('stats');
-addpath('visualization');
+addpath('visualization');ls
 vl_setupnn;
 
 % set path to the expected imdb test file
