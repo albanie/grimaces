@@ -66,8 +66,15 @@ testSet = 3 * ones(1, size(testLabels,2));
 testLabel = 3;
 [testSet(:)] = deal(testLabel);
 
-imdb_test.images.data = testData;
-imdb_test.images.labels = testLabels;
+% To help with issues with average precision, it helps to shuffle
+% the data
+testIdx = 1:numel(testLabels);
+shuffledIdx = testIdx(randperm(numel(testLabels)));
+shuffledLabels = testLabels(shuffledIdx);
+shuffledData = testData(:,:,:,shuffledIdx);
+
+imdb_test.images.data = shuffledData;
+imdb_test.images.labels = shuffledLabels;
 imdb_test.images.set = testSet;
 imdb_test.meta.sets = {'test'} ;
 imdb_test.meta.classes = 1:2;
