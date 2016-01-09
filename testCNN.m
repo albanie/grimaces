@@ -8,6 +8,7 @@ addpath('IO');
 addpath('dag');
 addpath('utils');
 addpath('stats');
+addpath('loss');
 addpath('visualization');ls
 vl_setupnn;
 
