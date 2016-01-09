@@ -13,7 +13,7 @@ addpath('visualization');ls
 vl_setupnn;
 
 % set path to the expected imdb test file
-opts.expDir = 'experiments/AlexNet-Binary/test';
+opts.expDir = 'experiments/Alexnet-Binary/test';
 opts.imdbPath = fullfile(opts.expDir, 'imdb_test.mat');
 
 % if the imdb test doesn't exist, we need to create it from scratch.
