@@ -42,13 +42,13 @@ dagnet = dagnn.DagNN.fromSimpleNN(pretrainedNet, 'canonicalNames', true);
 paramIdx = dagnet.getParamIndex([dagnet.layers(1:end-2).params]);
 [dagnet.params(paramIdx).learningRate] = deal(opts.fineTuningRate);
 
-% Finally, we add a second loss layer to AveragePrecsion 
-% (technically it is  1 - AP)
+% Finally, we add a second loss layer to measure AveragePrecsion 
+% (with matconvnet, it is easier to comput 
 layer = dagnn.Loss('loss', 'averageprecision');
 
 inputs = {'prediction','label'};
-output = 'error';
-dagnet.addLayer('error', layer, inputs, output) ;
+output = 'averagePrecision';
+dagnet.addLayer('averagePrecision', layer, inputs, output) ;
 
 % --------------------------------------------------------------------
 function net = insertDropout(net, num)
