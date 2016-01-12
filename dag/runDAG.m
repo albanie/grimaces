@@ -26,7 +26,7 @@ opts.numGpus = setupGPUs(opts);
 
 % Skip epochs that have already been completed, and initialize
 % from saved state
-start = opts.continue * findLastCheckpoint(opts);
+start = opts.continue * findLastCheckpoint(opts.expDir);
 if start >= 1
     fprintf('resuming by loading epoch %d\n', start) ;
     [dagnet, state] = loadState(opts.modelPath(start)) ;

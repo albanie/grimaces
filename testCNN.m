@@ -1,4 +1,4 @@
-function testResults = testCNN(net, varargin)
+function testResults = testCNN(net, opts)
 % Takes in a struct 'net' which contains the trained parameters
 % and  uses it to make predictions on the test set defined in imdb.
 
@@ -12,26 +12,13 @@ addpath('loss');
 addpath('visualization');ls
 vl_setupnn;
 
-% set path to the expected imdb test file
-opts.expDir = 'experiments/Alexnet-Binary/test';
-
-% if the imdb test doesn't exist, we need to create it from scratch.
-opts.dataDir = 'data/raw';
-
-% set path to where the preprocessed test data will be stored
-opts.imdbPath = fullfile('data', 'imdb_test.mat');
-
-% set threshold for classification
-opts.gradientThreshold = 6.5 ;
+% Parameters are set in a config file.
 
 % load a dagnn object
 dagnet = dagnn.DagNN.loadobj(net);
 
-
 %% DEBUGING MODE
 % dagnet.conserveMemory = false;
-%END DEBUGGING MODE
-%%
 
 % Load training dataset
 imdb_test = loadImdb(opts, dagnet, 'test');
@@ -42,18 +29,6 @@ testSet = find(imdb_test.images.set == 3);
 % set DAG to testMode
 dagnet.mode = 'test';
 
-% set testing options
-opts.test.gpus = [];
-opts.test.testMode = true;
-opts.test.expDir = opts.expDir;
-
-% only one epoch is needed.
-opts.test.numEpochs = 1;
-opts = vl_argparse(opts, varargin);
-
-% save the experiment parameters 
-saveExperimentParams(opts, 'test');
-
 % finally we can evaluate the network
 stats = runDAG(dagnet, ...
     imdb_test, ...
@@ -61,7 +36,6 @@ stats = runDAG(dagnet, ...
     opts.test, ...
     'val', ...
     testSet);
-
 
 % save the test results
 testResults = stats.val ;

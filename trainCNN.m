@@ -1,4 +1,4 @@
-function [dagnet, stats] = trainCNN(varargin)
+function [dagnet, stats] = trainCNN(opts)
 
 % setup the MatConvNet toolbox and add utils
 addpath('../matlab');
@@ -10,35 +10,8 @@ addpath('loss');
 addpath('visualization');
 vl_setupnn;
 
-% set pretrained network of choice
-opts.pretrainedNet = 'Alexnet';
-
-% set default destination path for results
-opts.expDir = strcat('experiments/', opts.pretrainedNet,'-Binary/train');
-
-% set path to the raw input data
-opts.dataDir = 'data/raw';
-
-% set path to where the preprocessed training data will be stored
-opts.imdbPath = fullfile('data', 'imdb.mat');
-
-% set threshold for classification
-opts.gradientThreshold = 6.5 ;
-
-[opts, varargin] = vl_argparse(opts, varargin);
-
-% set the default training parameters for the CNN
-opts.useBnorm = false;
-opts.train.batchSize = 100;
-opts.train.numEpochs = 500;
-opts.train.continue = false;
-opts.train.gpus = [];
-opts.train.learningRate = 0.001;
-opts.train.expDir = opts.expDir;
-opts = vl_argparse(opts, varargin);
-
-% save the experiment parameters 
-saveExperimentParams(opts, 'train');
+% NOTE 
+% All parameters are set in the experimental config file.
 
 % --------------------------------------------------------------------
 %                                               Prepare data and model
