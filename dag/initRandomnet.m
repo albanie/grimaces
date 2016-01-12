@@ -56,11 +56,12 @@ dagnet = randomizeLayer(dagnet, 'fc6f');
 dagnet = randomizeLayer(dagnet, 'fc7b');
 dagnet = randomizeLayer(dagnet, 'fc7f');
 
-% Finally, we add a second loss layer to calculate class error
-layer = dagnn.Loss('loss', 'classerror');
+% Finally, we add a second loss layer to measure AveragePrecsion 
+% (with matconvnet, it is easier to comput 
+layer = dagnn.Loss('loss', 'averageprecision');
 inputs = {'prediction','label'};
-output = 'error';
-dagnet.addLayer('error', layer, inputs, output) ;
+output = 'averagePrecision';
+dagnet.addLayer('averagePrecision', layer, inputs, output) ;
 
 % --------------------------------------------------------------------
 function dagnet = randomizeLayer(dagnet, layerName)
