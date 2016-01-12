@@ -29,7 +29,6 @@ opts.gradientThreshold = 6.5 ;
 
 % set the default training parameters for the CNN
 opts.useBnorm = false;
-opts.fineTuningRate = 0.05;
 opts.train.batchSize = 100;
 opts.train.numEpochs = 500;
 opts.train.continue = false;
