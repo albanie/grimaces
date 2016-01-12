@@ -14,10 +14,12 @@ vl_setupnn;
 
 % set path to the expected imdb test file
 opts.expDir = 'experiments/Alexnet-Binary/test';
-opts.imdbPath = fullfile(opts.expDir, 'imdb_test.mat');
 
 % if the imdb test doesn't exist, we need to create it from scratch.
-opts.dataDir = 'data';
+opts.dataDir = 'data/raw';
+
+% set path to where the preprocessed test data will be stored
+opts.imdbPath = fullfile('data', 'imdb_test.mat');
 
 % set threshold for classification
 opts.gradientThreshold = 6.5 ;

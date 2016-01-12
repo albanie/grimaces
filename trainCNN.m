@@ -17,10 +17,10 @@ opts.pretrainedNet = 'Alexnet';
 opts.expDir = strcat('experiments/', opts.pretrainedNet,'-Binary/train');
 
 % set path to the raw input data
-opts.dataDir = 'data';
+opts.dataDir = 'data/raw';
 
 % set path to where the preprocessed training data will be stored
-opts.imdbPath = fullfile(opts.expDir, 'imdb.mat');
+opts.imdbPath = fullfile('data', 'imdb.mat');
 
 % set threshold for classification
 opts.gradientThreshold = 6.5 ;

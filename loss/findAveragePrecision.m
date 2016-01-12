@@ -1,6 +1,6 @@
 function averagePrecision = findAveragePrecision(X, c)
 % averagePrecision = findAveragePrecision(X, c)
-% by default it does NOT interpolate by default.
+% It does NOT use interpolation.
 
 %   The prediction scores X are organised as a field of prediction
 %   vectors, represented by a H x W x D x N array. The first two
