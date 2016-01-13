@@ -40,7 +40,8 @@ convertedLabels(labels==1) = -1;
 convertedLabels(labels==2) = 1;
 figure(1);
 vl_pr(convertedLabels, scores, 'interpolate', false);
-
+experimentPath = strsplit(opts.expDir, '/');
+text(1,1, experimentPath(3));
 drawnow;
 print(1, opts.modelTestFigPath, '-dpdf');
 end
