@@ -14,6 +14,10 @@ subset = state.(mode);
 start = tic;
 num = 0;
 
+% we need to store values from each batch to calculate average precision
+APstored.labels = [];
+APstored.predictions = [];
+
 for subsetIdx=1:opts.batchSize:numel(subset)
     
     % If the size of the subset is not divisible by batchSize,
@@ -44,6 +48,9 @@ for subsetIdx=1:opts.batchSize:numel(subset)
             dagnet.eval(inputs, opts.derOutputs) ;
         else
             dagnet.eval(inputs) ;
+            predictions = squeeze(dagnet.vars(dagnet.getVarIndex('prediction')).value);
+            APstored.labels = horzcat(APstored.labels, inputs{4});
+            APstored.predictions = horzcat(APstored.predictions, predictions);  
         end
         
     end
@@ -60,6 +67,8 @@ for subsetIdx=1:opts.batchSize:numel(subset)
     stats.num = num ;
     printNetworkBatchStats(state, stats, opts, subsetIdx, subset, start, mode);
 end
+
+stats.APstored = APstored;
 
 dagnet.reset() ;
 dagnet.move('cpu') ;

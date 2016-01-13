@@ -2,8 +2,15 @@ function plotDAG(stats, epoch, opts)
 % plots the training and evaluation statistics
 % of the DAG.
 
-% Graphs are only created while training, not testing
+% add path to the vlfeat toolbox functions
+addpath '../../vlfeat/toolbox/plotop/';
+addpath '../../vlfeat/toolbox/misc/';
+
+% In test mode, we just we the precision recall curve
 if opts.testMode
+    labels = stats.val.APstored.labels;
+    predictions = stats.val.APstored.predictions;
+    plotPRCurve(predictions, labels, opts);
     return
 end
 
@@ -19,6 +26,23 @@ drawnow ;
 print(1, opts.modelFigPath, '-dpdf') ;
 
 
+end
+
+% -------------------------------------------
+function plotPRCurve(predictions, labels, opts)
+% -------------------------------------------
+scores = predictions(2,:) - predictions(1,:);
+
+% Convert our labels from {1,2} to {-1,1} to work with
+% the standard terminology
+convertedLabels = zeros(size(labels));
+convertedLabels(labels==1) = -1;
+convertedLabels(labels==2) = 1;
+figure(1);
+vl_pr(convertedLabels, scores, 'interpolate', false);
+
+drawnow;
+print(1, opts.modelTestFigPath, '-dpdf');
 end
 
 % -------------------------------------------

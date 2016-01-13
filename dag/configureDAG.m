@@ -22,6 +22,7 @@ opts.memoryMapFile = fullfile(tempdir, 'matconvnet.bin') ;
 opts = vl_argparse(opts, varargin) ;
 
 opts.modelFigPath = fullfile(opts.expDir, 'net-train.pdf') ;
+opts.modelTestFigPath = fullfile(opts.expDir, 'net-test.pdf') ;
 opts.modelPath = @(ep) fullfile(opts.expDir, sprintf('net-epoch-%d.mat', ep));
 
 end

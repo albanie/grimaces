@@ -8,6 +8,7 @@ addpath(GetFullPath('../IO'));
 addpath(GetFullPath('../utils'));
 addpath(GetFullPath('../visualization'));
 addpath(GetFullPath('../dag'));
+addpath(GetFullPath('../../../vlfeat/toolbox/plotop'));
 addpath(GetFullPath('../../matlab'));
 vl_setupnn;
 
@@ -22,5 +23,5 @@ runtests('visualization');
 %-----------------------------------
 runtests('utils/');
 runtests('dag');
-
+runtests('loss');
 end

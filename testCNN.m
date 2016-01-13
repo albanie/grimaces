@@ -18,7 +18,7 @@ vl_setupnn;
 dagnet = dagnn.DagNN.loadobj(net);
 
 %% DEBUGING MODE
-% dagnet.conserveMemory = false;
+dagnet.conserveMemory = false;
 
 % Load training dataset
 imdb_test = loadImdb(opts, dagnet, 'test');
