@@ -3,7 +3,7 @@ function plotDAG(stats, epoch, opts)
 % of the DAG.
 
 % add path to the vlfeat toolbox functions
-stataddpath '../../vlfeat/toolbox/plotop/';
+addpath '../../vlfeat/toolbox/plotop/';
 addpath '../../vlfeat/toolbox/misc/';
 
 % In test mode, we just we the precision recall curve
