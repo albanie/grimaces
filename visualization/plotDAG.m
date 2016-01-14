@@ -3,7 +3,7 @@ function plotDAG(stats, epoch, opts)
 % of the DAG.
 
 % add path to the vlfeat toolbox functions
-addpath '../../vlfeat/toolbox/plotop/';
+stataddpath '../../vlfeat/toolbox/plotop/';
 addpath '../../vlfeat/toolbox/misc/';
 
 % In test mode, we just we the precision recall curve
@@ -18,8 +18,10 @@ figure(1) ; clf ;
 plotNames = getPlotNames(stats, opts);
 
 for p = plotNames
-    plotName = char(p) ;
-    createSubPlot(plotName, plotNames, stats, epoch, opts);
+    if ~strcmp(plotName, 'APstored')
+        plotName = char(p) ;
+        createSubPlot(plotName, plotNames, stats, epoch, opts);
+    end
 end
 
 drawnow ;
