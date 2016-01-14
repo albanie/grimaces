@@ -5,7 +5,6 @@ if strcmp(opts.pretrainedNet, 'Alexnet')
     dagnet = initAlexnet(opts);
 end
 
-
 if strcmp(opts.pretrainedNet, 'Randomnet')
     dagnet = initRandomnet(opts);
 end
