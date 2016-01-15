@@ -17,6 +17,9 @@ vl_setupnn;
 % load a dagnn object
 dagnet = dagnn.DagNN.loadobj(net);
 
+% retain prediction layer to calculate AP
+dagnet.vars(dagnet.getVarIndex('prediction')).precious = true;
+
 % Load training dataset
 imdb_test = loadImdb(opts, dagnet, 'test');
 

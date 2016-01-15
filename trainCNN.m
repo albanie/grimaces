@@ -19,6 +19,7 @@ vl_setupnn;
 % Initialize a CNN dagnet using (pretrained) network
 dagnet = initPretrainedNet(opts);
 
+% retain prediction layer to calculate AP
 dagnet.vars(dagnet.getVarIndex('prediction')).precious = true;
 
 % Load training dataset
