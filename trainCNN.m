@@ -19,6 +19,7 @@ vl_setupnn;
 % Initialize a CNN dagnet using (pretrained) network
 dagnet = initPretrainedNet(opts);
 
+dagnet.vars(dagnet.getVarIndex('prediction')).precious = true;
 
 % Load training dataset
 imdb = loadImdb(opts, dagnet, 'train');

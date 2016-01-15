@@ -44,14 +44,11 @@ for subsetIdx=1:opts.batchSize:numel(subset)
         
         % evaluate the netowrk on this batch
         if strcmp(mode, 'train')
-            dagnet.conserveMemory = true;
             dagnet.accumulateParamDers = (subBatchIdx ~= 1) ;
             dagnet.eval(inputs, opts.derOutputs) ;  
         else
             % To calculate AP statistics, we must retain the variables
-            dagnet.conserveMemory = false;
             dagnet.eval(inputs) ;
-            
             predictions = squeeze(dagnet.vars(dagnet.getVarIndex('prediction')).value);
             APstored.labels = horzcat(APstored.labels, inputs{4});
             APstored.predictions = horzcat(APstored.predictions, predictions);
