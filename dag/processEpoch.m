@@ -44,13 +44,17 @@ for subsetIdx=1:opts.batchSize:numel(subset)
         
         % evaluate the netowrk on this batch
         if strcmp(mode, 'train')
+            dagnet.conserveMemory = true;
             dagnet.accumulateParamDers = (subBatchIdx ~= 1) ;
-            dagnet.eval(inputs, opts.derOutputs) ;
+            dagnet.eval(inputs, opts.derOutputs) ;  
         else
+            % To calculate AP statistics, we must retain the variables
+            dagnet.conserveMemory = false;
             dagnet.eval(inputs) ;
+            
             predictions = squeeze(dagnet.vars(dagnet.getVarIndex('prediction')).value);
             APstored.labels = horzcat(APstored.labels, inputs{4});
-            APstored.predictions = horzcat(APstored.predictions, predictions);  
+            APstored.predictions = horzcat(APstored.predictions, predictions);
         end
         
     end
@@ -68,8 +72,20 @@ for subsetIdx=1:opts.batchSize:numel(subset)
     printNetworkBatchStats(state, stats, opts, subsetIdx, subset, start, mode);
 end
 
-stats.APstored = APstored;
-
-dagnet.reset() ;
-dagnet.move('cpu') ;
+if strcmp(mode, 'val')
+    % calculate average precision
+    scores = APstored.predictions(2,:) - APstored.predictions(1,:);
+    
+    % Convert our labels from {1,2} to {-1,1} to work with
+    % the standard terminology
+    convertedLabels = zeros(size(APstored.labels));
+    convertedLabels(APstored.labels==1) = -1;
+    convertedLabels(APstored.labels==2) = 1;
+    [~,~,info] = vl_pr(convertedLabels, scores, 'interpolate', false);
+     
+    stats.averagePrecision = info.ap;
+    stats.APstored = APstored;
+    
 end
+    dagnet.reset() ;
+    dagnet.move('cpu') ;

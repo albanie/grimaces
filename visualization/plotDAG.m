@@ -18,8 +18,8 @@ figure(1) ; clf ;
 plotNames = getPlotNames(stats, opts);
 
 for p = plotNames
+    plotName = char(p);
     if ~strcmp(plotName, 'APstored')
-        plotName = char(p) ;
         createSubPlot(plotName, plotNames, stats, epoch, opts);
     end
 end
