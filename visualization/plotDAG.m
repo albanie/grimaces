@@ -40,7 +40,7 @@ scores = predictions(2,:) - predictions(1,:);
 convertedLabels = zeros(size(labels));
 convertedLabels(labels==1) = -1;
 convertedLabels(labels==2) = 1;
-figure(1);
+figure(1); clf;
 vl_pr(convertedLabels, scores, 'interpolate', false);
 experimentPath = strsplit(opts.expDir, '/');
 text(1,1, experimentPath(3));
