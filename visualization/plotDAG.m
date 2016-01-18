@@ -10,7 +10,7 @@ addpath '../../vlfeat/toolbox/misc/';
 if opts.testMode
     labels = stats.val.APstored.labels;
     predictions = stats.val.APstored.predictions;
-    plotPRCurve(predictions, labels, epoch, opts);
+    plotPRCurve(predictions, labels, opts);
     return
 end
 
@@ -31,7 +31,7 @@ print(1, opts.modelFigPath, '-dpdf') ;
 end
 
 % -------------------------------------------
-function plotPRCurve(predictions, labels, epoch, opts)
+function plotPRCurve(predictions, labels, opts)
 % -------------------------------------------
 scores = predictions(2,:) - predictions(1,:);
 
@@ -43,10 +43,9 @@ convertedLabels(labels==2) = 1;
 figure(1); clf;
 vl_pr(convertedLabels, scores, 'interpolate', false);
 experimentPath = strsplit(opts.expDir, '/');
-dim = [.6 .6 .3 .1];
-str = strcat(experimentPath(3), ', tested using network from epoch: ', num2str(epoch));
+dim = [.6 .7 .3 .1];
+str = strcat(experimentPath(3), ', using epoch: ', num2str(opts.bestEpoch));
 annotation('textbox',dim,'String',str,'FitBoxToText','on');
-% text(0,-0.5, );
 drawnow;
 print(1, opts.modelTestFigPath, '-dpdf');
 end

@@ -7,6 +7,7 @@ opts.train = [] ;
 opts.testMode = false;
 opts.gpus = [] ;
 opts.momentum = 0.9 ;
+opts.bestEpoch = 1;
 opts.numEpochs = 300 ;
 opts.batchSize = 256 ;
 opts.continue = false ;
