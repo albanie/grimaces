@@ -88,7 +88,7 @@ for f = statsFields
     end
 end
 subplot(1,numel(plotNames),find(strcmp(plotName,plotNames))) ;
-plot(1:epoch, values','o-') ;
+plot(1:epoch, values','-') ;
 xlabel('epoch') ;
 title(plotName) ;
 legend(leg{:}) ;
