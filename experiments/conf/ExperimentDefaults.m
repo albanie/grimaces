@@ -1,4 +1,4 @@
-function [opts, finalNet] = ExperimentDefaults(mode, experimentName)
+function [opts, finalNet] = ExperimentDefaults(mode, experimentName, opts)
 % Returns default options used in experiments
 
 addpath 'utils'
@@ -12,8 +12,6 @@ opts.gradientThreshold = 6.5 ;
 % --------------------------------------------------------------------
 
 if strcmp(mode, 'train')
-    
-    opts.imdbPath = fullfile('data', 'imdb.mat');
     opts.useBnorm = true;
     opts.train.batchSize = 100;
     opts.train.numEpochs = 500;
@@ -33,7 +31,6 @@ if strcmp(mode, 'test')
     opts.test.batchSize = 100;
     opts.test.numEpochs = 1;
     rootExpPath = strcat('experiments/results/', experimentName);
-    opts.imdbPath = fullfile('data', 'imdb_test.mat');
     % Load the network from the best epoch of training
     bestEpoch = findBestCheckpoint(strcat(rootExpPath, '/train'));
     data = load(fullfile(rootExpPath, '/train/', ...
