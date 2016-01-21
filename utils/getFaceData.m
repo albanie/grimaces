@@ -9,16 +9,27 @@ large_faces = select_large_faces(imgNames, opts.minFaceArea);
 % retrieve the label for each face
 labels = getBinaryGradientLabels(large_faces, opts);
 
-% format the data to conform to Alexnet
+% format the data to conform to the pretrained network
 averageImage = dagnet.meta.normalization.averageImage;
-[x, y, z] = size(averageImage);
-data = zeros(x,y,z, numel(large_faces), 'single');
+imgSize = dagnet.meta.normalization.imageSize;
+data = zeros(imgSize(1),imgSize(2),imgSize(3), ...
+                numel(large_faces), 'single');
+
+% Modify the average image when we are using vgg faces
+newAverageImage = zeros(horzcat(imgSize(1:2),3));
+if numel(dagnet.layers) == 37
+    for layer = 1:3
+        newAverageImage(:,:,layer) = ones(imgSize(1:2)) * averageImage(:,:,layer);
+    end
+    averageImage = newAverageImage;
+end
+
 
 for i = 1:numel(large_faces)
-    raw_face = imread(large_faces{i}{1});
-    resized_face = single(imresize(raw_face, dagnet.meta.normalization.imageSize(1:2)));
-    normalized_face = resized_face - averageImage;
-    data(:,:,:,i) = normalized_face(:,:,:);
+    rawFace = imread(large_faces{i}{1});
+    resizedFace = single(imresize(rawFace, dagnet.meta.normalization.imageSize(1:2)));
+    normalizedFace = resizedFace - averageImage;
+    data(:,:,:,i) = normalizedFace(:,:,:);
 end
 
 end
